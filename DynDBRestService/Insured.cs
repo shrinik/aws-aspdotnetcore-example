@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using Amazon.DynamoDBv2.DataModel;
 
 namespace DynDBRestService
 {
     public class Insured
     {
-        [JsonProperty("firstName")]
+        [DynamoDBProperty("FirstName")]
         public string FirstName;
 
-        [JsonProperty("lastName")]
+        [DynamoDBProperty("LastName")]
         public string LastName;
     }
 }

@@ -9,11 +9,11 @@ namespace DynDBRestService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class PolicyController : ControllerBase
     {
         private static IAmazonDynamoDB DynamoDBClient { get; set; }
 
-        public ValuesController(IAmazonDynamoDB dynamoDBClient)
+        public PolicyController(IAmazonDynamoDB dynamoDBClient)
         {
             DynamoDBClient = dynamoDBClient;
         }
@@ -30,21 +30,22 @@ namespace DynDBRestService.Controllers
         {
             var policySearch = context.ScanAsync<Policy>(new List<ScanCondition> {
                 new ScanCondition("PolicyId", ScanOperator.Equal, policyToFind.PolicyId)
-                //,new ScanCondition("PolicyType", ScanOperator.Equal, policyToFind.PolicyType)
+                ,new ScanCondition("Coverages", ScanOperator.Contains, policyToFind.Coverages[0])
             });
 
             var policies = await policySearch.GetNextSetAsync();
 
             if (policies.Count == 1)
             {
-                policyToFind.coveredInd = true;
+                var pols = policies.ToArray();
+                pols[0].coveredInd = true;
+                return pols[0];
             }
             else
             {
                 policyToFind.coveredInd = false;
+                return policyToFind;
             }
-
-            return policyToFind;
         }
     }
 }

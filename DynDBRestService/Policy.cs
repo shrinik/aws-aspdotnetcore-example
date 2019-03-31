@@ -15,9 +15,9 @@ namespace DynDBRestService
         [DynamoDBProperty("Coverages")]
         public List<string> Coverages;
 
-        public bool coveredInd;
+        [DynamoDBProperty("Insured")]
+        public Insured Insured;
 
-        //[JsonProperty("insured")]
-        //public Insured Insured;
+        public bool coveredInd;
     }
 }
