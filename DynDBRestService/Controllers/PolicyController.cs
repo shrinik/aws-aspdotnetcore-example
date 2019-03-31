@@ -28,24 +28,24 @@ namespace DynDBRestService.Controllers
 
         private static async Task<Policy> RetrieveAsync(DynamoDBContext context, Policy policyToFind)
         {
-            var policySearch = context.ScanAsync<Policy>(new List<ScanCondition> {
-                new ScanCondition("PolicyId", ScanOperator.Equal, policyToFind.PolicyId)
-                ,new ScanCondition("Coverages", ScanOperator.Contains, policyToFind.Coverages[0])
-            });
+            var scanConditions = new List<ScanCondition>();
+
+            if (!string.IsNullOrEmpty(policyToFind.PolicyId))
+            {
+                scanConditions.Add(new ScanCondition("PolicyId", ScanOperator.Equal, policyToFind.PolicyId));
+            }
+
+            if (!string.IsNullOrEmpty(policyToFind.Coverages[0]))
+            {
+                scanConditions.Add(new ScanCondition("Coverages", ScanOperator.Contains, policyToFind.Coverages[0]));
+            }
+
+            var policySearch = context.ScanAsync<Policy>(scanConditions);
 
             var policies = await policySearch.GetNextSetAsync();
 
-            if (policies.Count == 1)
-            {
-                var pols = policies.ToArray();
-                pols[0].coveredInd = true;
-                return pols[0];
-            }
-            else
-            {
-                policyToFind.coveredInd = false;
-                return policyToFind;
-            }
+            policyToFind.coveredInd = policies.Count > 0 ? true : false;
+            return policyToFind;
         }
     }
 }
