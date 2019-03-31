@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace DynDBRestService.Models
 {
     [DynamoDBTable("ProductCatalog")]
-    public class Book
+    public class Policy
     {
         [DynamoDBHashKey]
         public int Id { get; set; }

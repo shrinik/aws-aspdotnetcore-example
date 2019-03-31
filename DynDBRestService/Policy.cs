@@ -1,30 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using Amazon.DynamoDBv2.DataModel;
 using System.Collections.Generic;
 
 namespace DynDBRestService
 {
+    [DynamoDBTable("Policy")]
     public class Policy
     {
-        [JsonProperty("policyId")] // Set the variable below to represent the json attribute
+        [DynamoDBHashKey] // Set the variable below to represent the json attribute
         public string PolicyId; //"id"
 
-        [JsonProperty("policyType")]
+        [DynamoDBProperty("PolicyType")]
         public string PolicyType;
 
-        [JsonProperty("coverages")]
+        [DynamoDBProperty("Coverages")]
         public List<string> Coverages;
+
+        public bool coveredInd;
 
         //[JsonProperty("insured")]
         //public Insured Insured;
-
-        public Policy(string policyId, string policyType, List<string> coverages)
-        //, Insured insured)
-        {
-            PolicyId = policyId;
-            PolicyType = policyType;
-            Coverages = coverages;
-            //Insured.FirstName = insured.FirstName;
-            //Insured.LastName = insured.LastName;
-        }
     }
 }
