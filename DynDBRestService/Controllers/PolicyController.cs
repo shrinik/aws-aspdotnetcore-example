@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DynDBRestService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("rest/v1/coverage-availability")]
     [ApiController]
     public class PolicyController : ControllerBase
     {
